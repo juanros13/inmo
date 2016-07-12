@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+{% block title %}
+Edificio
+{% endblock%}
+{% block style %}
+<link href="{{ STATIC_PREFIX }}assets/pages/css/search.min.css" rel="stylesheet" type="text/css" />
+<link href="{{ STATIC_PREFIX }}css/apps/instalaciones/instalaciones.css" rel="stylesheet" type="text/css" />
+{% endblock%}
+{% block body %}
+<div class="page-content">
+  <!-- BEGIN PAGE HEADER-->
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li>
+        <a href="index.html">Home</a>
+        <i class="fa fa-circle"></i>
+      </li>
+      <li>
+        <a href="index.html">Inmuebles</a>
+        <i class="fa fa-circle"></i>
+      </li>
+      <li>
+         <span>Edificios</span>
+      </li>
+    </ul>
+  </div>
+  <h3 class="page-title">
+  EDIFICIOS
+  </h3>
+  <div class="portlet light bordered">
+    <div class="portlet-title tabbable-line">
+      <div class="caption">
+          <i class="icon-pin font-yellow-lemon"></i>
+          <span class="caption-subject bold font-yellow-lemon uppercase"> EDIFICIOS </span>
+      </div>
+      <div class="actions">
+        <div class="clearfix">
+          <a class="btn  green" data-toggle="modal" href="{% url 'vista_edificio_crear' %}">
+            Añadir nuevo edificio
+            <i class="fa fa-plus"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="portlet-body">
+      <div class="search-page search-content-3">
+        <div class="row">
+          {% for edificio in edificios %}
+          <div class="col-md-4">
+            <div class="tile-container thumbnail">
+              <div class="tile-thumbnail">
+                <a href="{% url 'vista_editar_edificio' edificio.id %}">
+                  {% if edificio.imagen %}
+                    {% thumbnail edificio.imagen "500x400" crop="center" as im %}
+                      <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+                    {% endthumbnail %}
+                  {% else %}
+                  <img src="http://www.placehold.it/500x400/EFEFEF/AAAAAA&amp;text=sin+imagen" alt=""/>
+                  {% endif %}
+                </a>
+              </div>
+              <div class="tile-title">
+                <h3>
+                  <a href="{% url 'vista_editar_edificio' edificio.id %}">{{ edificio.nombre }}</a>
+                </h3>
+                <div class="tile-desc">
+                  <p>{{ edificio.direccion|truncatewords:10 }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block javascript %}
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_PREFIX }}js/apps/instalaciones/instalaciones.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<script>
+jQuery(document).ready(function() {   
+    {% if message  %}
+    toastr["success"]("{{ message|safe }}", "Mensaje");
+    {% endif %}
+  });
+</script>
+{% endblock %}

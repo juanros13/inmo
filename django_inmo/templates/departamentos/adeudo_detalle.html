@@ -1,0 +1,25 @@
+<table id="sample-table-1" class="table table-striped table-bordered table-hover">
+  <thead>
+    <tr>
+      <th>Descripción</th>
+      <th>Importe</th>
+      <th>Pagado</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for mov in movimientos %}
+    <tr>
+      <td>
+        {{ mov.descripcion }}
+      </td>
+      <td>
+       $ {{ mov.importe }}
+      </td>
+      <td>
+       $ {{ mov.pagado }}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>

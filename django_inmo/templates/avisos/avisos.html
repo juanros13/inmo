@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}
+Avisos
+{% endblock%}
+{% block style %}
+<link href="{{ STATIC_PREFIX }}assets/pages/css/search.min.css" rel="stylesheet" type="text/css" />
+{% endblock%}
+{% block body %}
+<div class="page-content">
+  <!-- BEGIN PAGE HEADER-->
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li>
+        <a href="index.html">Home</a>
+        <i class="fa fa-circle"></i>
+      </li>
+      <li>
+         <span>Comunicación</span>
+      </li>
+    </ul>
+  </div>
+  <h3 class="page-title">
+  AVISOS
+  </h3>
+  <div class="portlet light bordered">
+    <div class="portlet-title tabbable-line">
+      <div class="caption">
+          <i class="icon-pin font-yellow-lemon"></i>
+          <span class="caption-subject bold font-yellow-lemon uppercase"> AVISOS </span>
+      </div>
+      <div class="actions">
+        <div class="clearfix">
+          <a class="btn  green" data-toggle="modal" href="{% url 'vista_avisos_crear' %}">
+            Añadir nuevo aviso
+            <i class="fa fa-plus"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="portlet-body">
+      <div class="tab-content search-page search-content-2">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="search-container ">
+              <ul>
+                {% for aviso in avisos %}
+                <li class="search-item clearfix">
+                  <div class="search-content">
+                    <div class="row">
+                      <div class="col-sm-10 col-xs-12">
+                        <h2 class="search-title">
+                          <a href="{% url 'vista_aviso_detalle' aviso.id %}">
+                            {{ aviso.titulo }}
+                          </a>
+                        </h2>
+                        <p class="search-desc">Creado por:
+                          <a href="javascript:;">{{ aviso.usuario_creo }}</a> -
+                          <span class="font-grey-salt">{{ aviso.fecha_creacion }}</span>
+                        </p>
+                        <br/>
+                        <p class="search-desc">
+                          {{ aviso.contenido|striptags|truncatewords_html:25  }}
+                        </p>
+                      </div>
+                      <div class="col-sm-2 col-xs-4">
+                          <p class="search-counter-number">
+                            <span class="label label-success">{{ aviso.comentarioaviso_set.all.count}}</span>
+                          </p>
+                          <p class="search-counter-label uppercase">Comentarios</p>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                {% endfor %}
+              </ul>
+              <div class="search-pagination">
+                <ul class="pagination">
+                  <li class="page-active">
+                    <a href="javascript:;"> 1 </a>
+                  </li>
+                  <li>
+                    <a href="javascript:;"> 2 </a>
+                  </li>
+                  <li>
+                    <a href="javascript:;"> 3 </a>
+                  </li>
+                  <li>
+                    <a href="javascript:;"> 4 </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block javascript %}
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+
+<!-- END PAGE LEVEL PLUGINS -->
+<script>
+jQuery(document).ready(function() {    
+});
+</script>
+{% endblock %}

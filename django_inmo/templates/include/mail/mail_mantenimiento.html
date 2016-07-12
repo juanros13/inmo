@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>Untitled Document</title>
+</head>
+<body>
+    <table style="width: 640px; background: #F2F2F2; padding:5px;" border="0" cellspacing="0"
+        cellpadding="0">
+        <tr>
+            <td align="center">
+                <img src="http://plumbago.krakens.mx/static/img/correos/header.jpg" />
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:20px;">
+                <span style="font-size:24px;font-family: Arial;font-weight: bold;color:#585858;">
+                    Se acaba de registrar un nuevo mantenimiento
+                </span><br><br>
+
+
+                <span style="font-size:15px;font-family: Arial;color:#585858;">
+                    El numero de mantenimiento es : <strong>{{ mantenimiento }}</strong><br><br>
+                </span>
+
+                <span style="font-size:24px;font-family: Arial;font-weight: bold;color:#585858;">
+                    DATOS DEL SOLICITANTE
+                </span><br><br>
+                <span style="font-size:15px;font-family: Arial;color:#585858;">
+                    <strong>Nombre solicitante : </strong><br><br>
+                    {{ usuario.nombre_inquilino }}
+                    <br><br>
+                    <strong>Departamento: </strong><br><br>
+                    {{ departamento.pk }}
+                    <br><br>
+                    <strong>Domicilio: </strong><br><br>
+                    {{ edificio.direccion }}
+                    <br><br>
+                    <strong>Telefonos </strong><br><br>
+                    Telefono: {% if usuario.telefono %}{{ usuario.telefono }}{% else %}Sin telefono disponible{% endif %}<br>
+                    Celular: {% if usuario.celular %}{{ usuario.celular }}{% else %}Sin celular disponible{% endif %}
+                    <br><br>
+                    <strong>Email: </strong><br><br>
+                    {{ correo }}
+                    <br><br>
+                </span>
+                <span style="font-size:24px;font-family: Arial;font-weight: bold;color:#585858;">
+                    DESCRIPCI&Oacute;N DEL DESPERFECTO
+                </span><br><br>
+                <span style="font-size:15px;font-family: Arial;color:#585858;">
+                   
+                    <strong>Titulo:</strong><br><br>
+                    {{ mantenimiento.titulo }}
+                    <br><br>
+                    <strong>Descripci&oacute;n:</strong><br><br>
+                    {{ mantenimiento.descripcion }}
+                    <br><br>
+                </span>
+                <br><br>
+            </td>
+        </tr>
+        <tr>
+            <td align="center">
+                <img src="http://plumbago.krakens.mx/static/img/correos/footer.jpg" />
+            </td>
+        </tr>
+    </table>
+            <!-- /contenido -->
+ 
+</html>

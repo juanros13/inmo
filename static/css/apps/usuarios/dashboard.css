@@ -1,0 +1,9 @@
+.feeds li .time {
+    float: left;
+    width: 120px;
+    margin-left: -120px;
+    padding: 4px 9px 5px 4px;
+    text-align: right;
+    font-style: italic;
+    color: #c1cbd0;
+}

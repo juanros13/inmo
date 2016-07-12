@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+{% block title %}
+Directorio
+{% endblock%}
+{% block style %}
+<link href="{{ STATIC_PREFIX }}assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
+<link href="{{ STATIC_PREFIX }}assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-modal/css/bootstrap-modal-bs3patch.css" rel="stylesheet" type="text/css"/>
+<link href="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-modal/css/bootstrap-modal.css" rel="stylesheet" type="text/css"/>
+{% endblock%}
+{% block body %}
+<div class="page-content">
+  <!-- BEGIN PAGE HEADER-->
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li>
+        <a href="index.html">Home</a>
+        <i class="fa fa-circle"></i>
+      </li>
+      <li>
+         <span>Comunicación</span>
+      </li>
+    </ul>
+  </div>
+  
+  <h3 class="page-title">
+  DIRECTORIO
+  </h3>
+  <!-- BEGIN MODAL RESPONSIVE -->
+  <div id="modal_entidad" class="modal fade" tabindex="-1" data-width="760">
+
+    <form role="form" action="{% url 'vista_directorio' %}" method="POST" id="form_crear_directorio">
+      {% csrf_token %}
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h4 class="modal-title caption-subject font-blue-madison bold uppercase">CREAR UNA NUEVA ENTIDAD</h4>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger display-hide" style="display: none;">
+          <button class="close" data-close="alert"></button> Tienes algunos errores. 
+        </div>
+        <div class="alert alert-success display-hide" style="display: none;">
+                    <button class="close" data-close="alert"></button> Your form validation is successful! 
+                </div>
+        <div class="row">
+          <div class="col-md-12">
+            {% for field in entidad_form %}
+            <div class="form-group">
+                <label class="control-label">{{ field.label|striptags }}</label>
+              {{ field }}
+              <span id="url-error" class="help-block help-block-error"></span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn btn-default">Cancelar</button>
+        <button type="submit" class="btn blue">Enviar</button>
+      </div>
+    </form>
+  </div>
+  <!-- END MODAL RESPONSIVE -->
+  <!-- BEGIN MODAL RESPONSIVE -->
+  <div id=modal_categoria_entidad class="modal fade" tabindex="-1" data-width="760">
+
+    <form role="form" action="{% url 'vista_directorio' %}" method="POST" id="">
+      {% csrf_token %}
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+        <h4 class="modal-title caption-subject font-blue-madison bold uppercase">CREAR UNA NUEVA CATEGORIA DE LAS ENTIDADES</h4>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger display-hide" style="display: none;">
+          <button class="close" data-close="alert"></button> Tienes algunos errores. 
+        </div>
+        <div class="alert alert-success display-hide" style="display: none;">
+            <button class="close" data-close="alert"></button> Your form validation is successful! 
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            {% for field in entidad_categoria_form %}
+            <div class="form-group">
+                <label class="control-label">{{ field.label|striptags }}</label>
+              {{ field }}
+              <span id="url-error" class="help-block help-block-error"></span>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" data-dismiss="modal" class="btn btn-default">Cancelar</button>
+        <button type="submit" class="btn blue">Enviar</button>
+      </div>
+    </form>
+  </div>
+  <!-- END MODAL RESPONSIVE -->
+    <div class="portlet light bordered">
+      <div class="portlet-title tabbable-line">
+        <div class="caption">
+            <i class="icon-pin font-yellow-lemon"></i>
+            <span class="caption-subject bold font-yellow-lemon uppercase"> DIRECTORIO </span>
+        </div>
+        <div class="actions">
+        <div class="clearfix">
+          <a class="btn  green" data-toggle="modal" href="#modal_entidad">
+                Añadir nueva entidad
+                <i class="fa fa-plus"></i>
+            </a>
+            <button data-toggle="modal" class="btn green" href="#modal_categoria_entidad">
+                Añadir nueva categoria
+                <i class="fa fa-plus"></i>
+            </button>
+          </div>
+      </div>
+        </div>
+    <div class="portlet-body">
+            <div class="tab-content">
+        <div class="row">
+                <div class="col-md-2 col-sm-4 col-xs-4">
+                  <ul class="nav nav-tabs tabs-left">
+                    {% if categorias_entidad %}
+                        {% for categoria in categorias_entidad %}
+                            <li >
+                              <a href="#tab_{{ forloop.counter }}" data-toggle="tab">{{ categoria }}</a>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                    <li class="active">
+                       <a href="#tab_condominos" data-toggle="tab">Del condominio </a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-md-10 col-sm-8 col-xs-8">
+                  <div class="tab-content">
+                    {% if categorias_entidad %}
+                        {% for categoria in categorias_entidad %}
+                      <div class="tab-pane" id="tab_{{ forloop.counter }}">
+                        <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                      <div class="portlet light bordered">
+                        <div class="portlet-body">
+                          <table class="table table-striped table-bordered table-hover table-checkable order-column " id="sample_1">
+                            <thead>
+                              <tr>
+                                <th>Entidad/Persona </th>
+                                <th>Telefono(s)</th>
+                                <th>Correo</th>
+                                <th>Pagina web</th>
+                                <th>Ubicacion</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                {% if categoria.entidad_set.all %}
+                                    {% for entidad in categoria.entidad_set.all %}
+                                <tr class="odd ">
+                                <td>{{ entidad.nombre }}</td>
+                                <td>{{ entidad.telefono }}</td>
+                                <td>
+                                  <a href="mailto:{{ usuario.email }}"> {{ usuario.email }} </a>
+                                </td>
+                                <td>
+                                    
+                                </td>
+                                <td class="center"> 
+                                    {{ usuario.ubicacion }} 
+                                </td>
+                              </tr>
+                                    {% endfor %}
+                                {% else %}
+                                <tr>
+                                    <td colspan="5">No se encontraron entidades en esta categoria</td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      <!-- END EXAMPLE TABLE PORTLET-->
+                      </div>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="tab-pane active" id="tab_condominos">
+                        <!-- BEGIN EXAMPLE TABLE PORTLET-->
+                      <div class="portlet light bordered">
+                        <div class="portlet-body">
+                          <table class="table table-striped table-bordered table-hover directorio" id="">
+                            <thead>
+                              <tr>
+                                <th>Usuarios</th>
+                                <th>Telefono(s)</th>
+                                <th>Correo</th>
+                                <th>Pagina web</th>
+                                <th>Ubicacion</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                {% for usuario in usuarios_condominio %}
+                                <tr class="odd ">
+                                <td> {{ usuario.first_name }} {{ usuario.last_name }}</td>
+                                <td>{{ usuario.userprofile.telefono }}</td>
+                                <td>
+                                  <a href="mailto:{{ usuario.email }}"> {{ usuario.email }} </a>
+                                </td>
+                                <td>
+                                    
+                                </td>
+                                <td class="center"> 
+                                    {{ usuario.ubicacion }} 
+                                </td>
+                              </tr>
+                                {% endfor %}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      <!-- END EXAMPLE TABLE PORTLET-->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+  <!-- END PAGE HEADER-->
+  
+</div>
+{% endblock %}
+{% block javascript %}
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+  <script src="{{ STATIC_PREFIX }}assets/global/scripts/datatable.js" type="text/javascript"></script>
+  <script src="{{ STATIC_PREFIX }}assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
+  <script src="{{ STATIC_PREFIX }}assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
+  <script src="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-modal/js/bootstrap-modalmanager.js" type="text/javascript"></script>
+  <script src="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-modal/js/bootstrap-modal.js" type="text/javascript"></script>
+  <script src="{{ STATIC_PREFIX }}assets/pages/scripts/ui-extended-modals.js"></script>
+  <script src="{{ STATIC_PREFIX }}assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+  <script src="{{ STATIC_PREFIX }}assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
+  <script src="{{ STATIC_PREFIX }}js/apps/directorio/directorio.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<script>
+jQuery(document).ready(function() {    
+  {% for field in entidad_form %}
+    {% if field.errors %}
+      $('#modal_entidad').modal('show');
+      toastr["error"]("{{ field.errors|striptags }}", "{{ field.label_tag|striptags }}");
+    {% endif %}
+  {% endfor %}
+  {% if message  %}
+    
+    toastr["success"]("{{ message|safe }}", "Mensaje");
+  {% endif %}
+});
+</script>
+{% endblock %}

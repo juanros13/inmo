@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+{% block title %}
+Encuesta detalle
+{% endblock%}
+{% block style %}
+<link href="{{ STATIC_PREFIX }}assets/pages/css/blog.min.css" rel="stylesheet" type="text/css" />
+{% endblock%}
+{% block body %}
+<div class="page-content">
+  <!-- BEGIN PAGE HEADER-->
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.html">Home</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <span>Dashboard</span>
+        </li>
+    </ul>
+  </div>
+  
+  <h3 class="page-title">
+  ENCUESTA DETALLE
+  </h3>
+  <!-- END PAGE HEADER-->
+  <div class="blog-page blog-content-2">
+    <div class="row">
+      <div class="col-lg-9">
+        <div class="blog-single-content bordered blog-container">
+          <div class="blog-single-head">
+            <h1 class="blog-single-head-title">{{ aviso.titulo }}</h1>
+            <div class="blog-single-head-date">
+              <i class="icon-calendar font-blue"></i>
+              <a href="javascript:;">{{ aviso.fecha_creacion }}</a>
+            </div>
+          </div>
+          <div class="blog-single-img">
+            <!--<img src="{{ STATIC_PREFIX }}assets/pages/img/background/4.jpg"> -->
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              {{ aviso.contenido|safe }}
+            </div>
+          </div>
+          <div class="blog-single-foot">
+            <ul class="blog-post-tags">
+              <li class="uppercase">
+                <a href="javascript:;">Bootstrap</a>
+              </li>
+              <li class="uppercase">
+                <a href="javascript:;">Sass</a>
+              </li>
+              <li class="uppercase">
+                <a href="javascript:;">HTML</a>
+              </li>
+            </ul>
+          </div>
+          <div class="blog-comments">
+            <h3 class="sbold blog-comments-title">Comentarios({{ comentarios.count }})</h3>
+            <div class="c-comment-list">
+              {% if comentarios %}
+                {% for comentario in comentarios %}
+              <div class="media">
+                <div class="media-left">
+                  <a href="#">
+                    <img class="media-object" alt="" src="{{ MEDIA_URL }}{{ comentario.usuario_creo.userprofile.avatar.url }}"> 
+                  </a>
+                </div>
+                <div class="media-body">
+                  <h4 class="media-heading">
+                    <a href="#">{{ comentario.usuario }}</a> 
+                      <span class="c-date">{{ comentario.fecha_creacion }}</span>
+                  </h4> 
+                  {{ comentario.comentario }}
+                </div>
+              </div>
+                {% endfor %}
+              {% else %}
+              <div class="media">
+                <div class="media-left">
+                  <div class="media-left">
+                  </div>
+                  <div class="media-body">
+                    <h4 class="media-heading">
+                    Sin comentarios
+                    </h4> 
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+            <h3 class="sbold blog-comments-title">Deja un comentario</h3>
+            <form role="form" action="./" method="POST">
+              {% csrf_token %}
+              {% for field in comentarios_form %}
+              <div class="form-group">
+                {{ field }}
+              </div>
+              {% endfor %}
+              <div class="form-group">
+                <button type="submit" class="btn blue uppercase btn-md sbold btn-block">Enviar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="blog-single-sidebar bordered blog-container">
+          <div class="blog-single-sidebar-tags">
+            <h3 class="uppercase">Tags</h3>
+            <ul class="blog-post-tags">
+              <li class="uppercase">
+                <a href="javascript:;">Mantenimiento</a>
+              </li>
+              <li class="uppercase">
+                <a href="javascript:;">Edificio C</a>
+              </li>
+              <li class="uppercase">
+                <a href="javascript:;">Agua</a>
+              </li>
+            </ul>
+          </div>
+          <div class="blog-single-sidebar-links">
+            <h3 class="uppercase">Ultimos avisos</h3>
+            <ul>
+              {% for encuesta in ultimos_avisos %}
+              <li>
+                <a href="{% url 'vista_aviso_detalle' encuesta.id %}">{{ encuesta.titulo }}</a>
+                <div class="blog-single-head-date">
+                  <i class="icon-calendar font-blue"></i>
+                  {{ encuesta.fecha_creacion }}
+                </div>
+              </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block javascript %}
+<script>
+
+  jQuery(document).ready(function() {   
+    {% if message  %}
+    toastr["success"]("{{ message|safe }}", "Mensaje");
+    {% endif %}
+  });
+</script>
+{% endblock %}

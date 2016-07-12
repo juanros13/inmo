@@ -1,0 +1,28 @@
+
+{% extends "base_sin_login.html" %}
+{% load i18n %}
+{% block script %} 
+<script src="{{ STATIC_PREFIX }}js/forgot_password.js"></script>
+{% endblock %}
+{% block body %}
+{% if key and email %}
+<form action="{% url "vista_olvide_mi_clave_guardar" %}" method="post" id="id-recovery-form-save">{% csrf_token %}
+  <fieldset>
+    <legend>Cambia el password de tu cuenta</legend>
+    <div class="form-group">
+      <label class="control-label" for="id-password">Password</label>
+      <input class="form-control" id="id-password" type="password" name="password1" >
+      <input id="email" name="email" type="hidden" value="{{ email }}">
+      <input id="key" name="key" type="hidden" value="{{ key }}">
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="id-password-confirm">Confirma el password</label>
+      <input class="form-control" id="id-password-confirm" type="password" name="password2" >
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary btn-large">Cambiar password</button>
+    </div>
+  </fieldset>
+</form>
+{% endif %}
+{% endblock %}

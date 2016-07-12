@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}
+Departamento crear
+{% endblock%}
+{% block style %}
+<link href="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css"/>
+<link href="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-summernote/summernote.css" rel="stylesheet" type="text/css" />
+<link href="{{ STATIC_PREFIX }}assets/pages/css/search.min.css" rel="stylesheet" type="text/css" />
+ <link href="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" />
+{% endblock%}
+{% block body %}
+<div class="page-content">
+  <!-- BEGIN PAGE HEADER-->
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li>
+        <a href="index.html">Home</a>
+        <i class="fa fa-circle"></i>
+      </li>
+      <li>
+        <a href="index.html">Inmuebles</a>
+        <i class="fa fa-circle"></i>
+      </li>
+      <li>
+         <span>Edificios</span>
+      </li>
+    </ul>
+  </div>
+  <h3 class="page-title">
+  AVISOS
+  </h3>
+  
+  <div class="portlet light bordered">
+    <div class="portlet-title tabbable-line">
+      <div class="caption">
+          <i class="icon-pin font-yellow-lemon"></i>
+          <span class="caption-subject bold font-yellow-lemon uppercase">CREAR NUEVO DEPARTAMENTO </span>
+      </div>
+    </div>
+    <div class="portlet-body form">
+      <div class="tab-content search-page search-content-2">
+        <div class="row">
+          <form role="form"  action="{% url 'vista_departamento_crear' %}" class="form-horizontal" method="POST" enctype="multipart/form-data">
+            <div class="col-sm-12">
+              {% csrf_token %}
+              <div class="form-body">
+                <div class="alert alert-danger display-hide" style="display: none;">
+                  <button class="close" data-close="alert"></button> Tienes algunos errores. 
+                </div>
+                <div class="alert alert-success display-hide" style="display: none;">
+                    <button class="close" data-close="alert"></button> Your form validation is successful! 
+                </div>
+                {% for field in departamento_form %}
+                  {% if not forloop.counter|divisibleby:2 %}
+                <div class="row">
+                  {% endif %}
+                  <div class="col-md-6">
+                    <div class="form-group {% if field.errors %}has-error{% endif %}">
+                      <label class="control-label col-md-3">{{ field.label|striptags }} {% if field.field.required %}*{% endif %}</label>
+                      <div class="col-md-9">
+                        {{ field }}
+                        <span id="url-error" class="help-block help-block-error">{{ field.errors|striptags }}</span>
+                      </div>
+                    </div>
+                  </div>
+                  {% if  forloop.counter|divisibleby:2 %}
+                </div>
+                  {% endif %}
+                {% endfor %}
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <button type="submit" name="guardar" class="btn btn-success uppercase">Guardar</button>
+              <button type="submit" name="guardar_con_condominos" class="btn btn-success uppercase">Guardar y aregar condóminos</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block javascript %}
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<script src="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
+<script src="{{ STATIC_PREFIX }}assets/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_PREFIX }}assets/global/plugins/moment.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-summernote/summernote.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_PREFIX }}js/apps/instalaciones/departamento_crear.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<script>
+jQuery(document).ready(function() {    
+});
+</script>
+{% endblock %}

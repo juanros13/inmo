@@ -1,0 +1,132 @@
+<!-- BEGIN HEADER -->
+    <div class="page-header navbar navbar-fixed-top">
+      <!-- BEGIN HEADER INNER -->
+      <div class="page-header-inner ">
+        <!-- BEGIN LOGO -->
+        <div class="page-logo">
+          <a href="/">
+            <img src="{{ STATIC_PREFIX }}img/logo.png" alt="logo" class="logo-default" /> </a>
+          <div class="menu-toggler sidebar-toggler"> </div>
+        </div>
+        <!-- END LOGO -->
+        <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+        <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse"> </a>
+        <!-- END RESPONSIVE MENU TOGGLER -->
+        <!-- BEGIN TOP NAVIGATION MENU -->
+        <div class="top-menu">
+          <ul class="nav navbar-nav pull-right">
+     
+            <!-- BEGIN INBOX DROPDOWN -->
+            <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+            <li class="dropdown dropdown-extended dropdown-inbox" id="header_inbox_bar">
+              <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                <i class="icon-envelope-open"></i>
+                {% if mensajes_no_leidos.nuevos_mensajes %}
+                <span class="badge badge-default">
+                {{ mensajes_no_leidos.nuevos_mensajes }} 
+                </span>
+                {% endif %}
+              </a>
+              <ul class="dropdown-menu">
+                <li class="external">
+                  <h3>Tienes <span class="bold">{{ mensajes_no_leidos.nuevos_mensajes }} nuevos</span> mensajes</h3>
+                  <a href="{% url 'vista_mensajes' %}">Ver todos</a>
+                </li>
+                <li>
+                  <ul class="dropdown-menu-list scroller" style="height: 275px;" data-handle-color="#637283">
+                    {% for mensaje in mensajes_no_leidos.ultimos_mensajes %}
+                    <li>
+                      <a href="{% url 'vista_mensajes_usuario' usuario=mensaje.usuario_envia %}">
+                        <span class="photo">
+                          <img src="{{ MEDIA_URL }}{{ mensaje.usuario_envia.userprofile.avatar.url }}" class="img-circle" alt="">
+                        </span>
+                         
+                        <span class="subject">
+                          <span class="from">
+                            {{ mensaje.usuario_envia }} 
+                          </span>
+                          {% if mensaje.visto == 0 %}
+                          <span class="badge badge-danger badge-roundless">Sin leer</span>
+                          {% endif %}
+                          <span class="time">{{ mensaje.fecha_creacion|date:'Y-m-d' }} </span>
+                        </span>
+                        <span class="message">
+                          {{ mensaje.mensaje|truncatewords_html:15 }}
+                        </span>
+                      </a>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <!-- END INBOX DROPDOWN -->
+            <!-- BEGIN USER EDIFICIOS DROPDOWN -->
+            <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+            <li class="dropdown dropdown-user">
+              <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+              <i class="fa fa-building-o"></i>
+              <span class="username username-hide-on-mobile">
+              {{ request.session.edificio_actual.0 }} </span>
+              <i class="fa fa-angle-down"></i>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-default">
+                {% for edificio in request.session.edificios_disponibles %}
+                <li >
+                  <a href="{% url 'vista_cambiar_edificio' edificio.1 %}" class="{% if edificio.1 == request.session.edificio_actual.1 %}bg-green bg-font-green{% endif %}">
+                    <i class="fa fa-building-o"></i><small>{{ edificio.0 }}</small>
+                  </a>
+                </li>
+                {% endfor %}
+                
+              </ul>
+            </li>
+            <!-- END USER EDIFICIOS DROPDOWN -->
+            <!-- BEGIN USER LOGIN DROPDOWN -->
+            <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+            <li class="dropdown dropdown-user">
+              <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+              <img alt="" class="img-circle" src="{{ MEDIA_URL }}{{ request.user.userprofile.avatar.url }}"/>
+              <span class="username username-hide-on-mobile">
+              {{ request.user.username }} </span>
+              <i class="fa fa-angle-down"></i>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-default">
+                <li>
+                  <a href="{% url "vista_configuracion" %}">
+                  <i class="icon-user"></i> Mi perfil </a>
+                </li>
+                <li>
+                  <a href="{% url 'vista_mensajes' %}">
+                  <i class="icon-envelope-open"></i> Mis mensajes 
+                    {% if mensajes_no_leidos.nuevos_mensajes %}
+                    <span class="badge badge-danger">
+                      {{ mensajes_no_leidos.nuevos_mensajes.count }} 
+                    </span>
+                    {% endif %}
+                  </a>
+                </li>
+                <li class="divider">
+                </li>
+                <li>
+                  <a href="{% url 'vista_logout'%}">
+                  <i class="icon-key"></i> Cerrar sesión</a>
+                </li>
+              </ul>
+            </li>
+            <!-- END USER LOGIN DROPDOWN -->
+            <!-- BEGIN QUICK SIDEBAR TOGGLER -->
+            <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+            <li class="dropdown dropdown-quick-sidebar-toggler">
+              <a href="javascript:;" class="dropdown-toggle">
+                <i class="icon-logout"></i>
+              </a>
+            </li>
+            <!-- END QUICK SIDEBAR TOGGLER -->
+          </ul>
+        </div>
+        <!-- END TOP NAVIGATION MENU -->
+      </div>
+      <!-- END HEADER INNER -->
+    </div>
+    <!-- END HEADER -->

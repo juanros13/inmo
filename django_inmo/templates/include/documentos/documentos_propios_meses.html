@@ -1,0 +1,27 @@
+<div class="panel-group" id="accordion">
+  <div class="panel panel-default">
+{% for not_mes in documentos_meses %}
+  {% ifchanged not_mes.fecha_creacion|date:"M" %} 
+    {% if not  forloop.first %}
+    </div>
+    {% endif %}
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ not_mes.fecha_creacion|date:"M" }}">
+        {{ not_mes.fecha_creacion|date:"F"|upper }}
+        </a>
+      </h4>
+    </div>
+    <div id="collapse{{ not_mes.fecha_creacion|date:"M" }}" class="panel-collapse collapse {% if forloop.first %}in{% endif %}">
+  {% endifchanged %}
+      <div class="panel-body">
+        <a href="{% if not_mes.es_local %}{{ not_mes.archivo.url }}{% else %}{{ not_mes.get_absolute_url }}{% endif %}">
+            {{ not_mes.titulo }}
+        </a>
+      </div>
+  {% if forloop.last %}
+    </div>
+  {% endif %}
+{% endfor %}
+  </div>
+</div>

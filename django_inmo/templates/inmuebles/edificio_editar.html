@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}
+Edificios editar
+{% endblock%}
+{% block style %}
+<link href="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css"/>
+<link href="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-summernote/summernote.css" rel="stylesheet" type="text/css" />
+<link href="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
+<link href="{{ STATIC_PREFIX }}assets/global/plugins/jquery-multi-select/css/multi-select.css" rel="stylesheet" type="text/css" />
+<link href="{{ STATIC_PREFIX }}assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+<link href="{{ STATIC_PREFIX }}assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link href="{{ STATIC_PREFIX }}assets/pages/css/search.min.css" rel="stylesheet" type="text/css" />
+ <link href="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" />
+{% endblock%}
+{% block body %}
+<div class="page-content">
+  <!-- BEGIN PAGE HEADER-->
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+      <li>
+        <a href="index.html">Home</a>
+        <i class="fa fa-circle"></i>
+      </li>
+      <li>
+        <a href="index.html">Inmuebles</a>
+        <i class="fa fa-circle"></i>
+      </li>
+      <li>
+         <span>Edificios</span>
+      </li>
+    </ul>
+  </div>
+  <h3 class="page-title">
+  AVISOS
+  </h3>
+  <div class="portlet light bordered">
+    <div class="portlet-title tabbable-line">
+      <div class="caption">
+          <i class="icon-pin font-yellow-lemon"></i>
+          <span class="caption-subject bold font-yellow-lemon uppercase">CREAR NUEVA INSTALACION </span>
+      </div>
+    </div>
+    <div class="portlet-body">
+      <div class="tab-content search-page search-content-2">
+        <div class="row">
+          <form role="form"  action="{% url 'vista_editar_edificio' edificio.id %}" method="POST" enctype="multipart/form-data">
+            <div class="col-sm-12">
+              {% csrf_token %}
+              <div class="form-body">
+                {% for field in edificio_form %}
+                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                  <label class="control-label">{{ field.label|striptags }}</label>
+                    {{ field }}
+                    <span class="help-block">{{ field.errors|striptags }}</span>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="col-md-12">
+              <button type="submit" class="btn btn-success uppercase">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block javascript %}
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+<script src="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
+<script src="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_PREFIX }}assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js" type="text/javascript"></script>
+<script src="{{ STATIC_PREFIX }}assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_PREFIX }}assets/pages/scripts/components-multi-select.min.js" type="text/javascript"></script>
+
+<script src="{{ STATIC_PREFIX }}assets/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_PREFIX }}assets/global/plugins/moment.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-summernote/summernote.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_PREFIX }}js/apps/instalaciones/crear_instalacion.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<script>
+jQuery(document).ready(function() {
+  $(".administradores").multiSelect();
+});
+</script>
+{% endblock %}

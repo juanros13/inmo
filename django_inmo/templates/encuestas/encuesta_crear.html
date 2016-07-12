@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block title %}
+Crear encuesta
+{% endblock%}
+{% block style %}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_PREFIX }}assets/global/plugins/clockface/css/clockface.css"/>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css"/>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css"/>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css"/>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css"/>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"/>
+
+{% endblock%}
+{% block body %}
+<div class="page-content">
+  <!-- BEGIN PAGE HEADER-->
+  <div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.html">Home</a>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <span>Encuestas</span>
+            <i class="fa fa-circle"></i>
+        </li>
+        <li>
+            <span>Crear encuesta</span>
+        </li>
+    </ul>
+  </div>
+  
+  <h3 class="page-title">
+  ENCUESTAS
+  </h3>
+  <!-- END PAGE HEADER-->
+  <!-- BEGIN PAGE CONTENT-->
+  <div class="row">
+    <div class="col-md-12">
+      <div class="portlet light bordered">
+        <div class="portlet-title">
+          <div class="caption font-red-sunglo">
+            <!--<i class="icon-settings font-red-sunglo"></i>-->
+            <span class="caption-subject bold uppercase">Crear encuesta</span>
+          </div>
+        </div>
+        <div class="portlet-body form">
+          <form role="form"  action="{% url 'vista_encuesta_crear' %}" method="POST">
+            {% csrf_token %}
+             <h3 class="text-success">Datos de la encuesta</h3>
+            <div class="form-body">
+              {{ opcion_formset.management_form }}
+              {{ encuesta_form.as_p }}
+              <h3 class="text-success">Opciones</h3>
+              <div id="opcion-container">
+
+                {% for form in opcion_formset %}
+                  <fieldset class="opcion-fieldset-{{ forloop.counter0 }}">
+                    {{ form.as_p }}
+                  </fieldset>
+                {% endfor %}
+              </div>
+              <a  class="btn btn-success uppercase " id="add-form-row">Añadir opción</a>
+              <a  class="btn btn-success uppercase " id="remove-form-row">Eliminar opción</a>
+            </div>
+            <div class="form-actions noborder">
+              <button type="submit" class="btn btn-success uppercase">Guardar</button>
+            </div>
+          </form>
+        </div>  
+      </div>
+    </div>
+  </div>
+  <!-- END PAGE CONTENT-->
+</div>
+{% endblock%}
+
+{% block javascript %}
+<script type="text/html" id="opcion-template">
+  <fieldset class="opcion-fieldset-__prefix__" style="display: none;">
+      {{ opcion_formset.empty_form.as_p }}
+  </fieldset>
+</script>
+</script>
+
+<!-- BEGIN PAGE LEVEL PLUGINS -->
+
+<script type="text/javascript" src="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_PREFIX }}assets/global/plugins/clockface/js/clockface.js"></script>
+<script type="text/javascript" src="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script type="text/javascript" src="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+<script type="text/javascript" src="{{ STATIC_PREFIX }}assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_PREFIX }}js/libs/django-inline-form/django-inline-form.js"></script>
+
+
+<!-- END PAGE LEVEL SCRIPTS -->
+<script>
+jQuery(document).ready(function() {    
+  $('.date-picker').datepicker({
+    orientation: "left",
+    autoclose: true,
+    format: 'yyyy-mm-dd',
+  });
+  {% if opcion_formset.total_error_count %}
+    {% for dict in opcion_formset.errors %}
+    toastr["error"]("{% for error in dict.values %}{{ error|striptags }}{% endfor %}", "{% for label in dict %}{{ label|striptags }}{% endfor %}");
+    {% endfor %}
+  {% endif %}
+  {% for field in encuesta_form %}
+    {% if field.errors %}
+      toastr["error"]("{{ field.errors|striptags }}", "{{ field.label_tag|striptags }}");
+    {% endif %}
+  {% endfor %}
+  {% if message  %}
+  toastr["success"]("{{ message|safe }}", "Mensaje");
+  {% endif %}
+  $('#add-form-row').djangoInlineFormAdd({
+    prefix: "opcion",
+    formHeight: 50,
+    deleteButtonId: "#remove-form-row"
+  });
+});
+</script>
+{% endblock %}

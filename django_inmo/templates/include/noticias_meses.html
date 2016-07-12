@@ -1,0 +1,55 @@
+<div class="panel-group" id="accordionEdificios">
+  <div class="panel panel-default">
+    {% for edificio in edificios_noticias %}
+      {% ifchanged edificio.pk %} 
+        {% if not  forloop.first %}
+    </div>
+        {% endif %}
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionEdificios" href="#collapse{{ edificio.pk }}">
+        {{ edificio.nombre|upper }}
+        </a>
+      </h4>
+    </div>
+    <div id="collapse{{ edificio.pk }}" class="panel-collapse collapse {% if forloop.first %}in{% endif %}">
+      {% endifchanged %}
+      <div class="panel-body">
+        <a href="#">
+          <div class="panel-group" id="accordion{{ edificio.pk }}">
+            <div class="panel panel-default">
+              {% for not_mes in edificio.noticias %}
+                {% ifchanged not_mes.fecha_creacion|date:"M" %} 
+                  {% if not  forloop.first %}
+              </div>
+                  {% endif %}
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion{{ edificio.pk }}" href="#collapseNoticias{{ not_mes.pk }}{{ not_mes.fecha_creacion|date:"M" }}">
+                  {{ not_mes.fecha_creacion|date:"F"|upper }}
+                  </a>
+                </h4>
+              </div>
+              <div id="collapseNoticias{{ not_mes.pk }}{{ not_mes.fecha_creacion|date:"M" }}" class="panel-collapse collapse {% if forloop.first %}in{% endif %}">
+                {% endifchanged %}
+                <div class="panel-body">
+                  <a href="{{not_mes.get_absolute_url}}">
+                      {{ not_mes.titulo }}
+                  </a>
+                </div>
+                  {% if forloop.last %}
+              </div>
+                  {% endif %}
+                {% endfor %}
+            </div>
+          </div>
+        </a>
+      </div>
+        {% if forloop.last %}
+    </div>
+        {% endif %}
+      {% endfor %}
+  </div>
+</div>
+
+
