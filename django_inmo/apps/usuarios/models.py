@@ -107,7 +107,7 @@ class UserProfile(models.Model):
     blank=True, 
     default=None  
   )
-  departamento = models.ManyToManyField(Departamento)
+  #departamento = models.ManyToManyField(Departamento)
   id_inquilino = models.IntegerField()
 
   def get_absolute_url_mensajes(self):

@@ -69,7 +69,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-        'C:/Users/juanros/Documents/Proyectos/Python/inmo/django_inmo/templates'
+        '/Users/edivci/Documents/Django/inmo/django_inmo/templates'
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -95,7 +95,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'django_inmo',
         'USER': 'root',
-        'PASSWORD': 'activo',
+        'PASSWORD': 'root',
         'HOST': '127.0.0.1',
     }
 }
@@ -140,7 +140,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    'C:/Users/juanros/Documents/Proyectos/Python/inmo/static',
+    '/Users/edivci/Documents/Django/inmo/static',
 ]
 
 DOMAIN_NAME = '127.0.0.1:8000'

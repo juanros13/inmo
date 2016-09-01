@@ -8,7 +8,7 @@ from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from apps.edificios.models import Edificio, Concepto
-from geoposition.fields import GeopositionField
+
 
 MESES_NOMBRES = {
   1:"Enero",
@@ -95,7 +95,7 @@ class DepartamentoWeb(models.Model):
   linea_telefonica = models.BooleanField()
   internet = models.BooleanField()
 
-  posicion = GeopositionField()
+  posicion = models.CharField(max_length=450)
 
   descripcion = models.TextField(blank=True, default=None)
 
@@ -241,48 +241,3 @@ class Responsable(models.Model):
   correo = models.EmailField()
   edificio = models.ForeignKey(Edificio)
 
-class Mantenimiento(models.Model):
-  usuario = models.ForeignKey(User)
-  departamento = models.CharField(max_length=250, verbose_name="Inmueble")
-  titulo = models.CharField(max_length=250,verbose_name="Titulo reporte")
-  descripcion = models.TextField(verbose_name="Descripción")
-  def __unicode__(self):
-      return '%05d' % (self.pk)
-
-
-
-def enviar_mail_mantenimiento(sender, **kwargs):
-  obj = kwargs['instance']
-
-  departamento = Departamento.objects.filter(pk=obj.departamento.pk, idusuario=obj.usuario.get_profile().id_inquilino)[0]
-  #responsables = Responsable.objects.filter(edificio=departamento.edificio)
-  # Enviando el correo de confirmacion operario
-  subject, from_email, to = 'PLUMBAGO - Nuevo mantenimiento - %s ' % obj, 'juanros13@gmail.com', ['juanros13@gmail.com', 'edgarcisneros88@gmail.com', 'alejandro@poware.com']
-  html_content = render_to_string('include/mail_mantenimiento.html', {
-    'edificio':departamento.edificio, 
-    'departamento':departamento,
-    'mantenimiento':obj,
-    'usuario':obj.usuario.get_profile(),
-    'correo':obj.usuario.email
-  }) 
-
-  text_content = strip_tags(html_content) # this strips the html, so people will have the text as well.
-  # create the email, and attach the HTML version as well.
-  mail = EmailMultiAlternatives(subject, text_content, from_email, to)
-  mail.attach_alternative(html_content, "text/html")
-  mail.send()
-
-
-   # Enviando el correo de confirmacion usuario
-  subject, from_email, to = 'PLUMBAGO - Se ha creado un nuevo mantenimiento', 'juanros13@gmail.com', ['juanros13@gmail.com', 'edgarcisneros88@gmail.com', 'alejandro@poware.com']
-  html_content = render_to_string('include/mail_mantenimiento_usuario.html', {
-    'mantenimiento':obj,
-  }) 
-  
-  text_content = strip_tags(html_content) # this strips the html, so people will have the text as well.
-  # create the email, and attach the HTML version as well.
-  mail = EmailMultiAlternatives(subject, text_content, from_email, to)
-  mail.attach_alternative(html_content, "text/html")
-  mail.send()
-
-post_save.connect(enviar_mail_mantenimiento, sender=Mantenimiento)
