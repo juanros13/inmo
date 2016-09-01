@@ -1,0 +1,5 @@
+*.pyc
+*.pyo
+migrations/
+assets/
+setting.py
