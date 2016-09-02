@@ -2,4 +2,4 @@
 *.pyo
 migrations/
 assets/
-setting.py
+settings.py
